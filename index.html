@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<title>With Love, For You 🌸</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Great+Vibes&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+:root{
+  --rose:#c9748a;--rose-l:#e8a5b8;--rose-xl:#f5d5df;--rose-bg:#fff0f4;
+  --blush:#fce8ef;--gold:#b8904a;--gold-l:#e8c98a;
+  --cream:#fdf8f2;--cream2:#f9f0e8;--cream3:#f5e8d8;
+  --brown:#5c3a28;--brown2:#8a5a42;--brown3:#a87858;--white:#fffdf9;
+}
+body{
+  background:var(--cream);color:var(--brown);
+  font-family:'Cormorant Garamond',serif;
+  overflow-x:hidden;cursor:default;
+  -webkit-tap-highlight-color:transparent;
+  -webkit-touch-callout:none;
+}
+
+/* ── PETALS ── */
+#petal-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.petal{position:absolute;top:-40px;animation:petalFall linear infinite;opacity:0}
+@keyframes petalFall{
+  0%{transform:translateY(0) rotate(0deg) translateX(0);opacity:0}
+  5%{opacity:.65}95%{opacity:.35}
+  100%{transform:translateY(110vh) rotate(720deg) translateX(50px);opacity:0}
+}
+
+/* ── GIFT SCREEN ── */
+#gift-screen{
+  position:fixed;inset:0;z-index:1000;
+  background:linear-gradient(135deg,#fff5f7 0%,#fff9f0 50%,#fff5f7 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:1.5rem;
+  transition:opacity .8s ease,visibility .8s ease;
+}
+#gift-screen.hide{opacity:0;visibility:hidden;pointer-events:none}
+.star{position:absolute;border-radius:50%;animation:starPulse ease-in-out infinite;pointer-events:none}
+@keyframes starPulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.4);opacity:1}}
+.gift-label{font-size:.72rem;letter-spacing:.42em;text-transform:uppercase;color:var(--rose);margin-bottom:1rem;opacity:.8}
+.gift-emoji{
+  font-size:clamp(5rem,16vw,8rem);display:block;margin-bottom:1.5rem;
+  animation:giftBounce 2s ease-in-out infinite;cursor:pointer;
+  filter:drop-shadow(0 8px 20px rgba(200,100,130,.25));
+  transition:transform .2s;user-select:none;-webkit-user-select:none;
+}
+.gift-emoji:hover{transform:scale(1.08) rotate(-3deg)}
+.gift-emoji:active{transform:scale(.95)}
+@keyframes giftBounce{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-16px) rotate(2deg)}}
+.gift-title{
+  font-family:'Playfair Display',serif;font-style:italic;color:var(--brown);
+  font-size:clamp(1.6rem,5vw,2.4rem);margin-bottom:.6rem;
+}
+.gift-sub{
+  font-size:clamp(.9rem,2vw,1.1rem);color:var(--brown3);font-style:italic;
+  line-height:1.7;max-width:340px;margin:0 auto 1.8rem;
+}
+.gift-btn{
+  display:inline-block;background:linear-gradient(135deg,var(--rose),#e8829a);
+  color:#fff;border:none;padding:.85rem 2.4rem;border-radius:50px;
+  font-family:'Cormorant Garamond',serif;font-size:1.05rem;letter-spacing:.12em;
+  cursor:pointer;box-shadow:0 6px 24px rgba(200,100,130,.35);
+  transition:transform .2s,box-shadow .2s;-webkit-appearance:none;touch-action:manipulation;
+}
+.gift-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(200,100,130,.45)}
+.gift-btn:active{transform:translateY(0)}
+.sparkles-row{
+  font-size:1.3rem;letter-spacing:.5rem;margin-top:1.2rem;color:var(--rose-l);
+  animation:sparkleFloat 3s ease-in-out infinite;
+}
+@keyframes sparkleFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* ── MUSIC PLAYER ── */
+#music-player{
+  position:fixed;
+  bottom:max(22px,env(safe-area-inset-bottom,22px));
+  right:max(22px,env(safe-area-inset-right,22px));
+  z-index:500;display:none;align-items:center;gap:10px;
+  background:rgba(255,245,248,.92);border:1px solid var(--rose-xl);
+  border-radius:50px;padding:8px 16px 8px 10px;
+  box-shadow:0 4px 24px rgba(200,100,130,.18);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  font-family:'Cormorant Garamond',serif;font-size:.85rem;color:var(--brown2);
+}
+#music-player.show{display:flex}
+#music-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--rose),#e8829a);
+  border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:1rem;color:#fff;box-shadow:0 2px 10px rgba(200,100,130,.3);
+  transition:transform .2s;flex-shrink:0;-webkit-appearance:none;touch-action:manipulation;
+}
+#music-btn:hover{transform:scale(1.08)}
+.music-note{font-size:.85rem;letter-spacing:.05em;color:var(--rose);animation:noteFloat 2s ease-in-out infinite}
+@keyframes noteFloat{0%,100%{opacity:.6;transform:translateY(0)}50%{opacity:1;transform:translateY(-3px)}}
+
+/* ── MAIN / HERO ── */
+.main-content{position:relative;z-index:1}
+#hero{
+  min-height:100svh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:2rem 1.5rem;position:relative;
+  background:linear-gradient(180deg,rgba(255,240,244,.6) 0%,rgba(253,248,242,0) 100%);
+}
+.hero-tap{font-size:.68rem;letter-spacing:.45em;text-transform:uppercase;color:var(--rose);margin-bottom:.3rem;opacity:0;animation:fadeUp .9s .2s forwards}
+.hero-subtitle-top{font-size:.9rem;font-style:italic;letter-spacing:.18em;color:var(--brown3);margin-bottom:1.6rem;opacity:0;animation:fadeUp .9s .5s forwards}
+.hero-title{
+  font-family:'Great Vibes',cursive;font-size:clamp(3.2rem,10vw,7.5rem);
+  color:var(--rose);line-height:1.05;margin-bottom:1.2rem;
+  text-shadow:0 2px 30px rgba(200,100,130,.18);
+  opacity:0;animation:fadeUp 1.1s .8s forwards;
+}
+.hero-desc{font-size:clamp(1rem,2.2vw,1.2rem);font-style:italic;color:var(--brown3);max-width:420px;line-height:1.9;margin-bottom:2rem;opacity:0;animation:fadeUp .9s 1.1s forwards}
+.hero-scroll{font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--rose-l);opacity:0;animation:fadeUp .9s 1.5s forwards}
+.hero-scroll a{color:inherit;text-decoration:none}
+.hero-flowers{font-size:1.6rem;letter-spacing:.5rem;margin-top:1rem;opacity:0;animation:fadeUp .9s 1.9s forwards}
+.hero-from{font-size:.85rem;font-style:italic;letter-spacing:.15em;color:var(--brown3);margin-top:.6rem;opacity:0;animation:fadeUp .9s 2.2s forwards}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTIONS ── */
+section{position:relative;z-index:1;padding:5rem 1.5rem}
+.sec-label{text-align:center;font-size:.67rem;letter-spacing:.45em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+.sec-title{text-align:center;font-family:'Playfair Display',serif;font-size:clamp(1.9rem,5vw,3rem);line-height:1.2;color:var(--brown);margin-bottom:.4rem}
+.sec-title em{font-style:italic;color:var(--rose)}
+.sec-divider{text-align:center;font-size:1.1rem;letter-spacing:.6rem;color:var(--rose-l);margin:.7rem 0 2.8rem}
+
+/* ── MESSAGE ── */
+#message{
+  background:var(--white);
+  background-image:radial-gradient(ellipse at 15% 15%,rgba(200,100,130,.05) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 85%,rgba(184,144,74,.05) 0%,transparent 55%);
+}
+.msg-body{max-width:660px;margin:0 auto;font-size:clamp(1.05rem,2vw,1.25rem);line-height:2;color:var(--brown3);text-align:center;font-style:italic}
+.msg-body strong{color:var(--rose);font-style:normal;font-weight:400}
+.msg-sig{margin-top:2rem;text-align:center;font-family:'Great Vibes',cursive;font-size:2.2rem;color:var(--rose)}
+.float-icon{display:block;text-align:center;font-size:2rem;margin:1.5rem 0;animation:floatAnim 4s ease-in-out infinite}
+@keyframes floatAnim{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* ── REASONS ── */
+#reasons{background:var(--cream)}
+.reasons-grid{max-width:840px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.4rem}
+.reason-card{
+  background:var(--white);border:1px solid var(--rose-xl);border-radius:18px;
+  padding:1.8rem 1.4rem;text-align:center;
+  transition:transform .3s,box-shadow .3s;opacity:0;transform:translateY(22px);
+  user-select:none;-webkit-user-select:none;
+}
+.reason-card.visible{animation:cardUp .65s forwards}
+@keyframes cardUp{to{opacity:1;transform:translateY(0)}}
+.reason-card:hover,.reason-card:active{transform:translateY(-5px);box-shadow:0 14px 36px rgba(200,100,130,.13)}
+.reason-icon{font-size:2rem;display:block;margin-bottom:.8rem}
+.reason-name{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--brown);margin-bottom:.4rem}
+.reason-text{font-size:.9rem;color:var(--brown3);line-height:1.7;font-style:italic}
+
+/* ── GARDEN ── */
+#garden{background:linear-gradient(180deg,var(--white) 0%,var(--cream) 100%)}
+.garden-grid{max-width:800px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:1rem}
+.flower-card{
+  display:flex;flex-direction:column;align-items:center;
+  padding:1.1rem .7rem;border-radius:16px;cursor:pointer;
+  transition:background .3s,transform .3s;
+  user-select:none;-webkit-user-select:none;
+}
+.flower-card:hover,.flower-card:active{background:var(--rose-bg);transform:scale(1.07)}
+.fi{font-size:2.3rem;display:block;margin-bottom:.45rem}
+.fn{font-family:'Playfair Display',serif;font-size:.82rem;color:var(--brown);margin-bottom:.15rem}
+.fm{font-size:.72rem;font-style:italic;color:var(--rose);text-align:center;line-height:1.3}
+.garden-hint{text-align:center;font-size:.78rem;color:var(--rose-l);font-style:italic;margin-top:1.5rem;letter-spacing:.1em}
+
+/* ── LOVE LETTER ── */
+#love-letter{background:var(--cream2)}
+.letter-wrap{max-width:660px;margin:0 auto}
+.letter-progress-row{display:flex;align-items:center;gap:10px;margin-bottom:1.4rem}
+.prog-bar{flex:1;height:2px;background:var(--gold-l);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--rose),var(--gold));transition:width .1s linear;border-radius:2px}
+.prog-lbl{font-size:.7rem;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;white-space:nowrap}
+.letter-paper{
+  background:var(--white);border:1px solid var(--gold-l);border-radius:3px;
+  padding:3rem 3.5rem;position:relative;
+  box-shadow:0 8px 40px rgba(184,144,74,.1),0 2px 8px rgba(92,58,40,.06);
+}
+.letter-paper::before{
+  content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background-image:repeating-linear-gradient(transparent,transparent 31px,rgba(184,144,74,.09) 31px,rgba(184,144,74,.09) 32px);
+}
+.letter-header{font-family:'Great Vibes',cursive;font-size:2rem;color:var(--rose);margin-bottom:1.4rem;position:relative;z-index:1}
+.letter-body-text{position:relative;z-index:1;font-size:clamp(.98rem,1.8vw,1.12rem);line-height:2;color:var(--brown3);min-height:180px}
+.letter-body-text p{margin-bottom:1.1rem}
+.letter-cursor{display:inline-block;width:2px;height:1em;background:var(--rose);margin-left:1px;vertical-align:middle;animation:blink .65s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.letter-done .letter-cursor{display:none}
+.letter-sign{margin-top:2rem;position:relative;z-index:1;opacity:0;transition:opacity 1s}
+.sign-from{font-size:.9rem;letter-spacing:.15em;color:var(--brown3);margin-bottom:.3rem}
+.sign-name{font-family:'Great Vibes',cursive;font-size:2.3rem;color:var(--rose)}
+.letter-seal{
+  position:absolute;bottom:-24px;right:2.5rem;width:50px;height:50px;border-radius:50%;
+  background:linear-gradient(135deg,var(--rose),#e8829a);
+  display:flex;align-items:center;justify-content:center;font-size:1.4rem;
+  box-shadow:0 4px 18px rgba(200,100,130,.38);z-index:2;
+}
+
+/* ── CLOSING ── */
+#closing{background:var(--white);text-align:center;padding-bottom:6rem}
+.closing-body{max-width:560px;margin:0 auto;font-size:clamp(1rem,1.8vw,1.15rem);line-height:1.95;color:var(--brown3);font-style:italic}
+.closing-heart{font-size:2rem;display:block;margin:2rem 0;animation:heartbeat 1.6s ease-in-out infinite}
+@keyframes heartbeat{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+.closing-credit{margin-top:3rem;font-size:.75rem;letter-spacing:.22em;color:var(--rose-l);text-transform:uppercase;line-height:2}
+
+/* ── MOBILE ── */
+@media(max-width:520px){
+  .letter-paper{padding:1.6rem 1.2rem}
+  .letter-header{font-size:1.5rem}
+  .sign-name{font-size:1.8rem}
+  section{padding:3.5rem 1.2rem}
+  .reasons-grid{grid-template-columns:1fr 1fr}
+  .garden-grid{grid-template-columns:repeat(3,1fr)}
+  #music-player{bottom:14px;right:12px;padding:6px 12px 6px 8px}
+}
+</style>
+</head>
+<body>
+
+<div id="petal-bg"></div>
+
+<!-- GIFT SCREEN -->
+<div id="gift-screen">
+  <div class="star" style="width:6px;height:6px;background:#e8c990;top:12%;left:14%;animation-duration:2.1s"></div>
+  <div class="star" style="width:4px;height:4px;background:#f0a8c0;top:18%;right:16%;animation-duration:1.7s;animation-delay:.4s"></div>
+  <div class="star" style="width:8px;height:8px;background:#e8c990;bottom:22%;left:10%;animation-duration:2.5s;animation-delay:.8s"></div>
+  <div class="star" style="width:5px;height:5px;background:#f0a8c0;bottom:16%;right:12%;animation-duration:1.9s;animation-delay:.2s"></div>
+  <div class="star" style="width:4px;height:4px;background:#e8c990;top:35%;left:6%;animation-duration:2.3s;animation-delay:1s"></div>
+  <div class="star" style="width:6px;height:6px;background:#f0a8c0;top:30%;right:7%;animation-duration:2s;animation-delay:.6s"></div>
+  <div class="star" style="width:3px;height:3px;background:#e8c990;top:60%;right:18%;animation-duration:1.6s;animation-delay:1.2s"></div>
+  <div class="star" style="width:5px;height:5px;background:#f0a8c0;bottom:35%;left:18%;animation-duration:2.2s;animation-delay:.3s"></div>
+
+  <p class="gift-label">✨ ada sesuatu untukmu ✨</p>
+  <span class="gift-emoji" id="giftEmoji" onclick="openGift()">🎁</span>
+  <h1 class="gift-title">For You, My Everything</h1>
+  <p class="gift-sub">Sebuah hadiah kecil yang dibuat dengan sepenuh hati, khusus untukmu 🌸</p>
+  <button class="gift-btn" onclick="openGift()">Buka Hadiahmu 🎀</button>
+  <div class="sparkles-row">🌸 ✦ 🌹 ✦ 🌸</div>
+</div>
+
+<!-- MUSIC PLAYER -->
+<div id="music-player">
+  <button id="music-btn" onclick="toggleMusic()" title="Play / Pause">▶</button>
+  <span class="music-note">♪ With Love, For You ♪</span>
+</div>
+<audio id="bg-music" loop>
+  <source src="badai.mp3" type="audio/mpeg"/>
+</audio>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+<!-- HERO -->
+<section id="hero">
+  <p class="hero-tap">✨</p>
+  <p class="hero-subtitle-top">a love letter in bloom — sebuah surat cinta untukmu</p>
+  <h1 class="hero-title">For You, Liam sayang</h1>
+  <p class="hero-desc">Kamu adalah segalanya. Setiap kelopak menyimpan betapa berartinya kamu bagiku.</p>
+  <p class="hero-scroll"><a href="#message">Scroll to discover — gulir ke bawah ↓</a></p>
+  <div class="hero-flowers">🌸 🌺 🌸</div>
+  <p class="hero-from" style="margin-top:.6rem">from my heart — dari hati Nesyaaa</p>
+</section>
+
+<!-- MESSAGE -->
+<section id="message">
+  <p class="sec-label">from my heart</p>
+  <h2 class="sec-title">You are my <em>wildest dream</em> come true.</h2>
+  <div class="sec-divider">🌸 ✦ 🌸</div>
+  <div class="msg-body">
+    Di dunia yang penuh momen biasa, kamu adalah yang luar biasa. Caramu tertawa, caramu peduli, caramu sekadar ada — itu mengisi setiap sudut duniaku dengan <strong>sesuatu yang tidak pernah aku tahu aku butuhkan.</strong>
+    <br/><br/>
+    Bunga-bunga ini tidak cukup. Tidak ada kata yang pernah bisa. Tapi setiap kelopak membawa semua perasaan tak terucap yang kusimpan untukmu — seperti surat-surat kecil cinta yang menunggu ditemukan.
+  </div>
+  <p class="msg-sig">— Always yours 🌹</p>
+  <span class="float-icon">🌸</span>
+  <span class="float-icon" style="animation-delay:1.5s;font-size:1.5rem;opacity:.6">🌺</span>
+  <span class="float-icon" style="animation-delay:.8s;font-size:1.1rem;opacity:.5">🌼</span>
+  <span class="float-icon" style="animation-delay:.3s;font-size:1rem;opacity:.4">🌸</span>
+  <span class="float-icon" style="animation-delay:1.1s;font-size:.9rem;opacity:.35">🌷</span>
+</section>
+
+<!-- REASONS -->
+<section id="reasons">
+  <p class="sec-label">a thousand reasons why</p>
+  <h2 class="sec-title">Why I <em>Love You</em></h2>
+  <div class="sec-divider">💗 ✦ 💗</div>
+  <div class="reasons-grid">
+    <div class="reason-card"><span class="reason-icon">🌹</span><div class="reason-name">Your Smile</div><div class="reason-text">Senyummu menerangi setiap ruangan dan setiap sudut hatiku sekaligus.</div></div>
+    <div class="reason-card"><span class="reason-icon">💫</span><div class="reason-name">Your Soul</div><div class="reason-text">Langka, tulus, dan jauh lebih indah dari bunga manapun yang pernah ada.</div></div>
+    <div class="reason-card"><span class="reason-icon">🌸</span><div class="reason-name">Your Kindness</div><div class="reason-text">Caramu mencintai dunia membuatku ingin menjadi pribadi yang lebih baik setiap harinya.</div></div>
+    <div class="reason-card"><span class="reason-icon">✨</span><div class="reason-name">Your Laughter</div><div class="reason-text">Suara terbaik di dunia. Melodi favoritku, selalu dan selamanya.</div></div>
+    <div class="reason-card"><span class="reason-icon">🌺</span><div class="reason-name">Your Strength</div><div class="reason-text">Kamu melewati segalanya dengan penuh keanggunan. Aku mengagumimu tanpa henti.</div></div>
+    <div class="reason-card"><span class="reason-icon">💖</span><div class="reason-name">Simply You</div><div class="reason-text">Setiap versi dirimu, setiap momennya — kamu lebih dari cukup.</div></div>
+  </div>
+</section>
+
+<!-- GARDEN -->
+<section id="garden">
+  <p class="sec-label">our secret garden</p>
+  <h2 class="sec-title">A Garden Grown <em>Just For You</em></h2>
+  <div class="sec-divider">🌷 ✦ 🌷</div>
+  <div class="garden-grid">
+    <div class="flower-card"><span class="fi">🌹</span><div class="fn">Rose</div><div class="fm">Cinta Tak Bertepi</div></div>
+    <div class="flower-card"><span class="fi">🌸</span><div class="fn">Cherry Blossom</div><div class="fm">Ketampanan Lembut</div></div>
+    <div class="flower-card"><span class="fi">🪷</span><div class="fn">Lotus</div><div class="fm">Hati Yang Murni</div></div>
+    <div class="flower-card"><span class="fi">🌺</span><div class="fn">Hibiscus</div><div class="fm">Gairah Yang Halus</div></div>
+    <div class="flower-card"><span class="fi">🌼</span><div class="fn">Daisy</div><div class="fm">Kesetiaan Sejati</div></div>
+    <div class="flower-card"><span class="fi">🌷</span><div class="fn">Tulip</div><div class="fm">Kebahagiaan Sempurna</div></div>
+    <div class="flower-card"><span class="fi">🌻</span><div class="fn">Sunflower</div><div class="fm">Kehangatan &amp; Kegembiraan</div></div>
+  </div>
+  <p class="garden-hint">✨ sentuh setiap bunga untuk menemukan maknanya ✨</p>
+</section>
+
+<!-- LOVE LETTER -->
+<section id="love-letter">
+  <p class="sec-label">captured in words</p>
+  <h2 class="sec-title">A Letter Written <em>From My Heart</em></h2>
+  <div class="sec-divider">🌹 ✦ 🌹</div>
+  <div class="letter-wrap">
+    <div class="letter-progress-row">
+      <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+      <span class="prog-lbl" id="progLbl">membaca…</span>
+    </div>
+    <div class="letter-paper" id="letterPaper">
+      <div class="letter-header" id="ltHead"></div>
+      <div class="letter-body-text" id="ltBody"></div>
+      <div class="letter-sign" id="ltSign">
+        <div class="sign-from">dengan sepenuh cinta,</div>
+        <div class="sign-name" id="ltSignName"></div>
+      </div>
+      <div class="letter-seal">🌹</div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section id="closing">
+  <p class="sec-label">always &amp; forever</p>
+  <h2 class="sec-title">You Are Loved <em>Beyond Words</em></h2>
+  <div class="sec-divider">💗 ✦ 💗</div>
+  <div class="closing-body">
+    Ke manapun hidup membawa kita, ketahuilah bahwa di suatu tempat di alam semesta ini, ada taman yang bermekaran dengan setiap perasaan yang pernah aku simpan untukmu. Kamu layak mendapatkan dunia ini. Kamu layak mendapatkan semua bunga. Kamu layak mendapatkan segalanya.
+  </div>
+  <span class="closing-heart">💗</span>
+  <p style="font-family:'Great Vibes',cursive;font-size:1.8rem;color:var(--rose);margin-bottom:.4rem">Made with love, just for you 🌸</p>
+  <p class="closing-credit">🌸 Jangan pernah tinggalin Nesyaaa ya 🌸</p>
+</section>
+
+</div>
+
+<script>
+/* PETALS */
+(function(){
+  const bg=document.getElementById('petal-bg');
+  const em=['🌸','🌺','🌼','🌷','✿','❀'];
+  for(let i=0;i<20;i++){
+    const p=document.createElement('div');
+    p.className='petal';
+    p.textContent=em[~~(Math.random()*em.length)];
+    p.style.cssText='left:'+Math.random()*100+'%;font-size:'+(13+Math.random()*15)+'px;animation-duration:'+(9+Math.random()*14)+'s;animation-delay:'+Math.random()*18+'s';
+    bg.appendChild(p);
+  }
+})();
+
+/* GIFT OPEN */
+let gifted=false;
+function openGift(){
+  if(gifted)return; gifted=true;
+  const screen=document.getElementById('gift-screen');
+  const emoji=document.getElementById('giftEmoji');
+  emoji.style.animation='none';
+  emoji.style.transform='scale(1.35) rotate(10deg)';
+  emoji.textContent='🎉';
+  setTimeout(function(){emoji.textContent='🌸';},300);
+  setTimeout(function(){
+    screen.classList.add('hide');
+    const mus=document.getElementById('bg-music');
+    const btn=document.getElementById('music-btn');
+    const player=document.getElementById('music-player');
+    player.classList.add('show');
+    mus.volume=1.0;
+    mus.play().then(function(){btn.textContent='⏸';}).catch(function(){btn.textContent='▶';});
+  },700);
+}
+
+/* MUSIC TOGGLE */
+function toggleMusic(){
+  const mus=document.getElementById('bg-music');
+  const btn=document.getElementById('music-btn');
+  if(mus.paused){mus.volume=1.0;mus.play();btn.textContent='⏸';}
+  else{mus.pause();btn.textContent='▶';}
+}
+
+/* SCROLL REVEAL */
+const cardObs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e,i){
+    if(e.isIntersecting){
+      setTimeout(function(){e.target.classList.add('visible');},i*90);
+      cardObs.unobserve(e.target);
+    }
+  });
+},{threshold:.06,rootMargin:'0px 0px -20px 0px'});
+document.querySelectorAll('.reason-card').forEach(function(c){cardObs.observe(c);});
+
+/* TYPING LETTER */
+const LETTER=[
+  {t:'header', s:'Untuk Liam Yang Tercinta,'},
+  {t:'para',   s:'Aku tidak tahu bagaimana cara memulai ini, karena setiap kata yang aku tulis terasa terlalu kecil untuk menggambarkan betapa berartinya kamu bagiku.'},
+  {t:'para',   s:'Ada hari-hari ketika aku hanya berdiam diri dan berpikir — betapa beruntungnya aku, bisa mengenal seseorang sepertimu. Seseorang yang senyumnya bisa membuat dunia terasa lebih hangat, yang tawanya adalah melodi favoritku.'},
+  {t:'para',   s:'Kamu tidak perlu menjadi sempurna. Kamu hanya perlu menjadi kamu — dan kamu sudah lebih dari cukup. Lebih dari cukup untuk mengisi setiap sudut hatiku dengan hal-hal yang tidak pernah aku tahu aku butuhkan.'},
+  {t:'para',   s:'Aku ingin kamu tahu: di hari-hari yang berat, di hari-hari yang sunyi, di hari-hari yang terasa terlalu panjang — aku selalu ada. Dan hatiku selalu, selalu milikmu.'},
+  {t:'sign',   s:'Seseorang Yang Mencintaimu'},
+  {t:'header', s:'Untuk Kamu Yang Paling Aku Sayang,'},
+  {t:'para',   s:'Hii sayang, aku cuma mau bilang makasi banyak udah datang di kehidupan aku.'},
+  {t:'para',   s:'Aku cuma bisa ngucapin makasi karna jujur aku bingung harus bilang apa. Jujur aku sayang banget sama kamu, dari awal kita ketemu sampe sekarang rasa sayang aku ke kamu ga berubah.'},
+  {t:'para',   s:'Dan hebatnya lagi kamu selalu bisa bikin aku nyaman setiap detik dan waktu kalo lagi sama kamu. Jujur kalo nanti kita sampe ketemu, aku cuma mikir kamu bakalan ninggalin aku atau engga, karna aku cuma takut diri aku ga sesuai yang kamu mau.'},
+  {t:'para',   s:'Tapi kalo kamu mikir aku bakalan gamau, aku bakal jawab: pasti mau dong — walaupun kamu kaya gimanapun aku tetap mau dan setia sama kamu. Aku juga ngerasa beruntung banget bisa ketemu kamu di hidup aku yang cuma sekali ini.'},
+  {t:'para',   s:'Maaf kalo aku egois atau apapun itu, mweheheh maklum cwe 🙈 Udah deh, intinya aku sayang banget sama kamu. Love uu pacar aku yang paling aku sayang! 💗'},
+  {t:'sign',   s:'Nesyaaa 🌸'},
+];
+
+const totalChars=LETTER.reduce(function(s,l){return s+l.s.length;},0);
+let typedChars=0,letterStarted=false;
+
+function updateProg(n){
+  typedChars+=n;
+  const pct=Math.min(100,Math.round(typedChars/totalChars*100));
+  document.getElementById('progFill').style.width=pct+'%';
+  document.getElementById('progLbl').textContent=pct<100?'membaca…':'selesai ✦';
+}
+
+function typeStr(el,text,speed,cb){
+  let i=0;
+  const cur=document.createElement('span');
+  cur.className='letter-cursor';
+  el.appendChild(cur);
+  const iv=setInterval(function(){
+    cur.before(document.createTextNode(text[i]));
+    updateProg(1); i++;
+    if(i>=text.length){clearInterval(iv);cur.remove();if(cb)cb();}
+  },speed);
+}
+
+function runLetter(){
+  if(letterStarted)return; letterStarted=true;
+  const paras=LETTER.filter(function(l){return l.t==='para';});
+  const head=document.getElementById('ltHead');
+  const body=document.getElementById('ltBody');
+  const sign=document.getElementById('ltSign');
+  const signName=document.getElementById('ltSignName');
+  typeStr(head,LETTER[0].s,40,function(){
+    (function typeNext(idx){
+      if(idx>=paras.length){
+        sign.style.opacity='1';
+        typeStr(signName,LETTER[LETTER.length-1].s,55,function(){
+          document.getElementById('letterPaper').classList.add('letter-done');
+        });
+        return;
+      }
+      const p=document.createElement('p');
+      const cur=document.createElement('span');cur.className='letter-cursor';
+      p.appendChild(cur); body.appendChild(p);
+      setTimeout(function(){
+        let ci=0;const txt=paras[idx].s;
+        const iv2=setInterval(function(){
+          cur.before(document.createTextNode(txt[ci]));
+          updateProg(1); ci++;
+          if(ci>=txt.length){clearInterval(iv2);cur.remove();setTimeout(function(){typeNext(idx+1);},500);}
+        },26);
+      },idx===0?350:150);
+    })(0);
+  });
+}
+
+const ltObs=new IntersectionObserver(function(entries){
+  if(entries[0].isIntersecting){setTimeout(runLetter,400);ltObs.disconnect();}
+},{threshold:.06,rootMargin:'0px 0px -20px 0px'});
+ltObs.observe(document.getElementById('love-letter'));
+</script>
+</body>
+</html>
